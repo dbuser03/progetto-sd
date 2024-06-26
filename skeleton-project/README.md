@@ -106,7 +106,7 @@ Il progetto è stato svolto seguendo questi step:
 ![HomePage.png](/skeleton-project/screenshots/figma/HomePage.png)
 ![BuyPage.png](/skeleton-project/screenshots/figma/BuyPage.png)
 ![RenewPage.png](/skeleton-project/screenshots/figma/RenewPage.png)
-![MyDomanis.png](/skeleton-project/screenshots/figma/MyDomainsPage.png)
+![MyDomains.png](/skeleton-project/screenshots/figma/MyDomainsPage.png)
 ![ErrorPage.png](/skeleton-project/screenshots/figma/ErrorPage.png)
 
 9. Abbiamo scritto le API Rest nella cartella `server-web`. Le API permettono
