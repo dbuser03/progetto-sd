@@ -49,6 +49,11 @@ public class UserRegistrationRequestResource {
     }
   }
 
+  /**
+   * Retrieves all user emails from the database.
+   * 
+   * @return A JSON array of all user emails in the database.
+   */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getAllUserEmails() {
