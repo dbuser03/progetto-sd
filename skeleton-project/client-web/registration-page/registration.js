@@ -10,15 +10,40 @@ document.getElementById('registration-form').addEventListener('submit', async fu
   // Serialize form data into JSON
   const formData = new FormData(this);
   const jsonData = {};
-  
-  // Initialize userId as empty string
-  jsonData.userId = "";
 
   formData.forEach((value, key) => {
     jsonData[key] = value;
   });
 
-  // Make POST request to server
+  // First, check if the email is already in use
+  try {
+    const checkResponse = await fetch('http://localhost:8080/registrations', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!checkResponse.ok) {
+      const errorDetails = await checkResponse.text();
+      throw new Error('Error checking email. Server responded with: ' + errorDetails);
+    }
+
+    const emails = await checkResponse.json(); // Assuming the server returns an array of emails
+    const email = formData.get('email');
+
+    if (emails.includes(email)) {
+      alert('Email is already in use. Please login or register with a different email.');
+      window.location.replace('../login-page/login.html'); // Redirect to login page
+      return;
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+    alert('Error checking email. Please try again.');
+    return;
+  }
+
+  // Proceed with registration if email is not in use
   try {
     const response = await fetch('http://localhost:8080/registrations', {
       method: 'POST',
@@ -30,8 +55,7 @@ document.getElementById('registration-form').addEventListener('submit', async fu
     });
 
     if (!response.ok) {
-      // Extract error details from response if possible
-      const errorDetails = await response.text(); // Assuming the server sends a plain text or JSON error message
+      const errorDetails = await response.text();
       throw new Error('Error registering user. Server responded with: ' + errorDetails);
     }
 
@@ -41,14 +65,14 @@ document.getElementById('registration-form').addEventListener('submit', async fu
     sessionStorage.setItem('sessionToken', userId); // Store the session token
 
     // Wait 0.5 second before redirecting
-    window.location.replace('./userid.html?userId=' + userId);
+    setTimeout(() => {
+      window.location.replace('./userid.html?userId=' + userId);
+    }, 500);
     resetRegistrationForm(); // Reset form after successful registration
 
   } catch (error) {
     console.error('Error:', error.message);
-    // Convert jsonData to a readable string for debugging
     const requestBodyDebugInfo = JSON.stringify(jsonData, null, 2); // Pretty print JSON
-    // Handle error (e.g., show error message to user with additional debug info if available)
     alert('Error registering user. Please try again. Debug info: ' + error.message + '\nRequest Body: ' + requestBodyDebugInfo);
   }
 });

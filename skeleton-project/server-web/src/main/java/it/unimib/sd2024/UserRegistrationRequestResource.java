@@ -6,9 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.UUID;
+
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -41,6 +46,31 @@ public class UserRegistrationRequestResource {
       return in.readLine();
     } catch (IOException e) {
       return "Error connecting to the database";
+    }
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getAllUserEmails() {
+    try {
+      String command = "GET registrations";
+      String response = connectToDatabase(command);
+      // Parse the response to JSON object
+      JsonObject responseObject = jsonb.fromJson(response, JsonObject.class);
+      JsonObject allDocuments = responseObject.getJsonObject("allDocuments");
+
+      // Stream through the documents, extract emails, and join them into a JSON array
+      // string
+      String emailsJson = allDocuments.values().stream()
+          .map(document -> ((JsonObject) document).getJsonObject("data").getString("email"))
+          .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add)
+          .build()
+          .toString();
+
+      return Response.ok(emailsJson).build();
+    } catch (Exception e) {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).entity(jsonb.toJson("Error getting all user emails"))
+          .build();
     }
   }
 
