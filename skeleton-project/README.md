@@ -8,8 +8,8 @@ Tra le funzionalità offerte dalla nostra piattaforma ci sono le seguenti:
 - Rinnovo di un dominio da me posseduto e non ancora scaduto
 - Possibilità di visualizzare le informazioni inerenti ad un dominio posseduto
   da altri
-- Possibilità di contattare il proprietario di un dominio a cui sono
-  interessato tramite mail
+- Possibilità di contattare il proprietario di un dominio a cui sono interessato
+  tramite mail
 - Visionare il catalogo di tutti i domini in mio possesso (scaduti e non)
 
 ## Componenti del gruppo
@@ -82,9 +82,8 @@ comandi Maven all'interno della cartella `database` per startarlo:
 ### Lavoro Svolto
 Il progetto è stato svolto seguendo questi step:
 1. Creazione di un database documentale
-2. Il database documentale è composto da una HashMap contenente le
-   collezioni necessarie per il nostro progetto. (`registrations`,
-   `domains`).
+2. Il database documentale è composto da una HashMap contenente le collezioni
+   necessarie per il nostro progetto. (`registrations`, `domains`).
 4. Le collezioni sono strutturate come `name` (in formato String) + `documents`
    (ossia una HashMap contenente i vari documenti)
 3. Ogni collezione contiene al suo interno i documenti specifici di una delle

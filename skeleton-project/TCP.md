@@ -20,7 +20,8 @@ COMANDO COLLECTION_NAME [DOCUMENT_ID] [DOCUMENT_DATA]
 ### Formato delle Risposte
 Le risposte sono stringhe testuali che descrivono il risultato dell'operazione:
 
-- Se l'operazione ha successo, viene restituito il documento o un messaggio di conferma.
+- Se l'operazione ha successo, viene restituito il documento o un messaggio di
+  conferma.
 - Se l'operazione fallisce, viene restituito un messaggio di errore.
 
 ### GET:
@@ -45,7 +46,8 @@ Risposta: {"name": "domains", "allDocuments": {...}}
 #### Risposte: 
 - Documento aggiunto: `Document added`.
 - Collezione non trovata: `Collection not found`.
-- Documento già esistente: `Document with the same ID already exists. Use PUT to update it`.
+- Documento già esistente: `Document with the same ID already exists. Use PUT to
+  update it`.
 
 ```
 Richiesta: POST users 123 {"name":"John Doe"}
@@ -82,28 +84,33 @@ Risposta: Document updated
 ```
 
 ### Architettura del Sistema
-- `Main`: Classe principale che avvia il server e gestisce le connessioni dei client.
-- `ProtocolHandler`: Classe responsabile della gestione e dell'interpretazione delle richieste, e dell'esecuzione delle operazioni sul database.
-- `Database`: Classe che rappresenta il database, contenente una mappa delle collezioni.
+- `Main`: Classe principale che avvia il server e gestisce le connessioni dei
+  client.
+- `ProtocolHandler`: Classe responsabile della gestione e dell'interpretazione
+  delle richieste, e dell'esecuzione delle operazioni sul database.
+- `Database`: Classe che rappresenta il database, contenente una mappa delle
+  collezioni.
 - `Collection`: Classe che rappresenta una collezione di documenti.
-- `Document`: Classe che rappresenta un documento con un ID e dati in formato JSON.
-Main: Classe principale che avvia il server e gestisce le connessioni dei
-client.
+- `Document`: Classe che rappresenta un documento con un ID e dati in formato
+  JSON.
 
 ### TCP nel Nostro Progetto
 Nel contesto di questo progetto, TCP viene utilizzato per garantire una
 comunicazione affidabile tra il client e il server. Il server ascolta su una
-specifica porta (`3030`) per le connessioni in arrivo, e per ogni connessione stabilita,
-viene creato un thread dedicato (Handler) per gestire le richieste del client.
+specifica porta (`3030`) per le connessioni in arrivo, e per ogni connessione
+stabilita, viene creato un thread dedicato (Handler) per gestire le richieste
+del client.
+
 
 ### La Classe Main
 
 **Descrizione della Classe**
 
-La classe Main è il punto di ingresso principale per l'applicazione del server database. 
-Questa classe inizializza il server, ascolta le connessioni in arrivo e gestisce le richieste dei client tramite un handler dedicato.
-Funzionamento della Classe Main
-Variabili e Costanti
+La classe Main è il punto di ingresso principale per l'applicazione del server
+database. Questa classe inizializza il server, ascolta le connessioni in arrivo
+e gestisce le richieste dei client tramite un handler dedicato.
+
+Funzionamento della Classe Main Variabili e Costanti
 
 ```
 public static final int PORT = 3030;: La porta su cui il server ascolta le connessioni in arrivo.
@@ -112,7 +119,8 @@ private static Database database;: Istanza del database utilizzata dal server.
 
 **Metodo startServer()**
 
-Questo metodo è responsabile dell'avvio del server e della gestione delle connessioni dei client.
+Questo metodo è responsabile dell'avvio del server e della gestione delle
+connessioni dei client.
 
 ```
 public static void startServer() throws IOException {
@@ -135,16 +143,21 @@ public static void startServer() throws IOException {
 }
 ```
 
-1. Creazione del ServerSocket: Viene creato un ServerSocket che ascolta sulla porta definita.
+1. Creazione del ServerSocket: Viene creato un ServerSocket che ascolta sulla
+   porta definita.
 
-2. Inizializzazione del Database: Viene inizializzato il database e vengono create alcune collezioni di esempio.
+2. Inizializzazione del Database: Viene inizializzato il database e vengono
+   create alcune collezioni di esempio.
 
-3. Gestione delle Connessioni: Il server entra in un ciclo infinito in cui accetta nuove connessioni client e per ciascuna connessione crea un nuovo thread Handler per gestire le richieste.
+3. Gestione delle Connessioni: Il server entra in un ciclo infinito in cui
+accetta nuove connessioni client e per ciascuna connessione crea un nuovo thread
+Handler per gestire le richieste.
 
 
 **Classe Interna Handler**
 
-La classe Handler gestisce le singole connessioni dei client. Ogni istanza di Handler è associata a un singolo socket client.
+La classe Handler gestisce le singole connessioni dei client. Ogni istanza di
+Handler è associata a un singolo socket client.
 
 
 Costruttore: Inizializza il Handler con il socket client.
@@ -159,7 +172,8 @@ private static class Handler extends Thread {
 }
 ```
 
-Metodo run: Legge le richieste dal client, le processa usando ProtocolHandler, e invia le risposte al client.
+Metodo run: Legge le richieste dal client, le processa usando ProtocolHandler, e
+invia le risposte al client.
 
 ```
     public void run() {
