@@ -1,0 +1,48 @@
+The most suitable class to manage concurrency in this codebase is the Collection
+class.
+
+Here's why:
+
+    Document Access: The Collection class directly manages the addition,
+    retrieval, update, and deletion of documents (Document objects). Any
+    concurrent access to these operations could lead to data inconsistencies.
+    Fine-grained Locking: By encapsulating concurrency control within
+    Collection, you can implement fine-grained locking mechanisms. This allows
+    locking specific documents within a collection instead of locking the entire
+    database. Data Consistency: By managing concurrency in Collection, you can
+    ensure that modifications to the same document are handled sequentially,
+    preventing issues like lost updates or dirty reads.
+
+
+Here's why the other classes wouldn't be ideal choices for managing concurrency
+in this codebase:
+
+Database Class:
+
+    Coarse-grained Locking: The Database class manages the entire collection of
+    documents. Implementing concurrency control here would lead to
+    coarse-grained locking, meaning the entire database would be locked for any
+    operation on a document. This can significantly impact performance,
+    especially for concurrent access to different collections. Focus on
+    Collection Management: The primary responsibility of the Database class is
+    managing collections, adding, removing, and retrieving them. Concurrency
+    control for individual documents belongs within the Collection class.
+
+Document Class:
+
+    Limited Scope: The Document class represents a single data entity and
+    doesn't have control over adding, removing, or updating documents within a
+    collection. Concurrency issues arise during these operations, which are
+    managed by the Collection class.
+
+ProtocolHandler Class:
+
+    High-Level Interaction: The ProtocolHandler class interacts with the user's
+    input and translates it into database operations. It doesn't directly manage
+    document access. The concurrency logic should reside within the class
+    responsible for manipulating the data (i.e., Collection).
+
+In summary, while these other classes play important roles in the system, the
+Collection class is the most logical place to manage concurrency control because
+it directly handles document access and modifications, allowing for fine-grained
+locking and ensuring data consistency.

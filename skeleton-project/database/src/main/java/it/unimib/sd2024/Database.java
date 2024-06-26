@@ -1,15 +1,15 @@
 package it.unimib.sd2024;
 
-import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents a database with collections.
- * This class is not thread-safe.
+ * This class is thread-safe.
  */
 public final class Database {
   private String name;
-  private HashMap<String, Collection> collections;
+  private ConcurrentHashMap<String, Collection> collections;
 
   /**
    * Constructs a new Database with the specified name.
@@ -20,7 +20,7 @@ public final class Database {
   public Database(String name) {
     validateName(name);
     this.name = name;
-    this.collections = new HashMap<>();
+    this.collections = new ConcurrentHashMap<>();
   }
 
   /**
@@ -48,7 +48,7 @@ public final class Database {
    *
    * @return a map of collection names to collections
    */
-  public HashMap<String, Collection> getAllCollections() {
+  public ConcurrentHashMap<String, Collection> getAllCollections() {
     return collections;
   }
 
@@ -57,7 +57,7 @@ public final class Database {
    *
    * @param collections a map of collection names to collections
    */
-  public void setAllCollections(HashMap<String, Collection> collections) {
+  public void setAllCollections(ConcurrentHashMap<String, Collection> collections) {
     validateCollections(collections);
     this.collections.clear();
     this.collections.putAll(collections);
@@ -86,7 +86,7 @@ public final class Database {
    *                  null.
    * @throws IllegalArgumentException if documents is null.
    */
-  public void updateCollection(String name, HashMap<String, Document> documents) {
+  public void updateCollection(String name, ConcurrentHashMap<String, Document> documents) {
     Collection collection = collections.get(name);
     if (collection != null) {
       collection.setAllDocuments(documents);
@@ -126,12 +126,12 @@ public final class Database {
   }
 
   /**
-   * Validates the HashMap of collections.
+   * Validates the ConcurrentHashMap of collections.
    * 
-   * @param collections the HashMap to validate
+   * @param collections the ConcurrentHashMap to validate
    * @throws IllegalArgumentException if collections is null
    */
-  private void validateCollections(HashMap<String, Collection> collections) {
+  private void validateCollections(ConcurrentHashMap<String, Collection> collections) {
     if (collections == null) {
       throw new IllegalArgumentException("Collections cannot be null");
     }

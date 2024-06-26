@@ -1,8 +1,10 @@
 package it.unimib.sd2024;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Represents a collection of documents in a database.
@@ -10,7 +12,8 @@ import java.util.Objects;
 public final class Collection {
 
   private String name;
-  private final HashMap<String, Document> documents;
+  private final ConcurrentHashMap<String, Document> documents;
+  private final ReadWriteLock nameLock = new ReentrantReadWriteLock();
 
   /**
    * Constructs a new Collection with the specified name.
@@ -21,7 +24,7 @@ public final class Collection {
   public Collection(String name) {
     validateName(name);
     this.name = name;
-    this.documents = new HashMap<>();
+    this.documents = new ConcurrentHashMap<>();
   }
 
   /**
@@ -30,7 +33,12 @@ public final class Collection {
    * @return the name of the collection
    */
   public String getName() {
-    return name;
+    nameLock.readLock().lock();
+    try {
+      return name;
+    } finally {
+      nameLock.readLock().unlock();
+    }
   }
 
   /**
@@ -41,7 +49,12 @@ public final class Collection {
    */
   public void setName(String name) {
     validateName(name);
-    this.name = name;
+    nameLock.writeLock().lock();
+    try {
+      this.name = name;
+    } finally {
+      nameLock.writeLock().unlock();
+    }
   }
 
   /**
@@ -50,7 +63,7 @@ public final class Collection {
    * @return a map of document IDs to documents
    */
   public Map<String, Document> getAllDocuments() {
-    return documents;
+    return new ConcurrentHashMap<>(documents);
   }
 
   /**
@@ -59,7 +72,7 @@ public final class Collection {
    * @param documents the new documents to set, must not be null
    * @throws IllegalArgumentException if the documents map is null
    */
-  public void setAllDocuments(HashMap<String, Document> documents) {
+  public void setAllDocuments(ConcurrentHashMap<String, Document> documents) {
     validateDocuments(documents);
     this.documents.clear();
     this.documents.putAll(documents);
