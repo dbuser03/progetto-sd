@@ -1,0 +1,90 @@
+Classe Main
+Descrizione della Classe
+
+La classe Main è il punto di ingresso principale per l'applicazione del server database. Questa classe inizializza il server, ascolta le connessioni in arrivo e gestisce le richieste dei client tramite un handler dedicato.
+Funzionamento della Classe Main
+Variabili e Costanti
+
+    public static final int PORT = 3030;: La porta su cui il server ascolta le connessioni in arrivo.
+    private static Database database;: Istanza del database utilizzata dal server.
+
+Metodo startServer()
+
+Questo metodo è responsabile dell'avvio del server e della gestione delle connessioni dei client.
+
+java
+
+public static void startServer() throws IOException {
+    var server = new ServerSocket(PORT);
+
+    System.out.println("Database listening at localhost:" + PORT);
+    database = new Database("Database1");
+
+    // Creazione delle collezioni iniziali
+    database.addCollection("registrations", new Collection("registrations"));
+    database.addCollection("domains", new Collection("domains"));
+
+    try {
+        while (true)
+            new Handler(server.accept()).start();
+    } catch (IOException e) {
+        System.err.println(e);
+    } finally {
+        server.close();
+    }
+}
+
+    Creazione del ServerSocket: Viene creato un ServerSocket che ascolta sulla porta definita.
+    Inizializzazione del Database: Viene inizializzato il database e vengono create alcune collezioni di esempio.
+    Gestione delle Connessioni: Il server entra in un ciclo infinito in cui accetta nuove connessioni client e per ciascuna connessione crea un nuovo thread Handler per gestire le richieste.
+
+Classe Interna Handler
+
+La classe Handler gestisce le singole connessioni dei client. Ogni istanza di Handler è associata a un singolo socket client.
+
+java
+
+private static class Handler extends Thread {
+    private Socket client;
+
+    public Handler(Socket client) {
+        this.client = client;
+    }
+
+    public void run() {
+        try (var out = new PrintWriter(client.getOutputStream(), true);
+             var in = new BufferedReader(new InputStreamReader(client.getInputStream()))) {
+
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                ProtocolHandler protocolHandler = new ProtocolHandler(inputLine, database);
+                String response = protocolHandler.handleRequest();
+                System.out.println(response);
+                out.println(response); // Send response back to client
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+        } finally {
+            try {
+                client.close();
+            } catch (IOException e) {
+                System.err.println("Error closing client socket: " + e.getMessage());
+            }
+        }
+    }
+}
+
+    Costruttore: Inizializza il Handler con il socket client.
+    Metodo run: Legge le richieste dal client, le processa usando ProtocolHandler, e invia le risposte al client.
+
+Metodo main
+
+Il metodo main avvia il server chiamando il metodo startServer.
+
+java
+
+public static void main(String[] args) throws IOException {
+    startServer();
+}
+

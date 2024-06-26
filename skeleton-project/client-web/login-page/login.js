@@ -1,3 +1,36 @@
+async function createCollectionOnPageLoad(collectionName) {
+  try {
+    // Prepara il corpo della richiesta in formato JSON con la chiave "collectionName"
+    const requestBody = JSON.stringify({ collectionName });
+
+    const response = await fetch('http://localhost:8080/collections', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: requestBody // Usa il corpo della richiesta preparato
+    });
+
+    if (!response.ok) {
+      // Se il server risponde con un errore, registra i dettagli dell'errore
+      const errorDetails = await response.json();
+      console.error('Error creating collection. Server responded with:', errorDetails);
+    } else {
+      // Registra il messaggio di successo
+      const successMessage = await response.json();
+      console.log(successMessage);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+// Chiama la funzione createCollection non appena la pagina viene caricata
+window.onload = function() {
+  createCollectionOnPageLoad("registrations"); // Sostituisci "registrations" con il nome desiderato della collezione
+  createCollectionOnPageLoad("domains"); // Sostituisci "domains" con il nome desiderato della collezione
+};
+
 function resetLoginForm() {
   // Reset the login form fields
   document.getElementById('login-form').reset();

@@ -29,10 +29,6 @@ public class Main {
     System.out.println("Database listening at localhost:" + PORT);
     database = new Database("Database1");
 
-    // Create a UserRegisterRequests collection
-    database.addCollection("registrations", new Collection("registrations"));
-    database.addCollection("domains", new Collection("domains"));
-
     try {
       while (true)
         new Handler(server.accept()).start();

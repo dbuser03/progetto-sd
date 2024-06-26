@@ -76,6 +76,11 @@ public class ProtocolHandler {
     String documentData = parts.length > 3 ? parts[3] : null; // { "key": "value" }
 
     switch (command) {
+      case "CREATE":
+        if (documentData != null) {
+          return "Invalid command";
+        }
+        return handleCreate(collectionName);
       case "GET":
         if (documentData != null) {
           return "Invalid command";
@@ -203,4 +208,21 @@ public class ProtocolHandler {
     return "Document deleted";
   }
 
+  /**
+   * Handles a CREATE request to create a new collection. Creates a new collection
+   * with the specified name and populates it with some initial data.
+   *
+   * @param collectionName the name of the new collection
+   * @return a string indicating the result of the operation
+   */
+  private String handleCreate(String collectionName) {
+    if (database.getCollection(collectionName) != null) {
+      return "Collection already exists";
+    }
+
+    Collection newCollection = new Collection(collectionName);
+    database.addCollection(collectionName, newCollection);
+
+    return "Collection created";
+  }
 }

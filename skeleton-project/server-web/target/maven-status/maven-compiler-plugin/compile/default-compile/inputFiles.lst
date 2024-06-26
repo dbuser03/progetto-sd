@@ -1,6 +1,7 @@
 /workspaces/progetto-sd/skeleton-project/server-web/src/main/java/it/unimib/sd2024/CorsFilter.java
 /workspaces/progetto-sd/skeleton-project/server-web/src/main/java/it/unimib/sd2024/JsonException.java
 /workspaces/progetto-sd/skeleton-project/server-web/src/main/java/it/unimib/sd2024/JsonParsingException.java
+/workspaces/progetto-sd/skeleton-project/server-web/src/main/java/it/unimib/sd2024/PopulateDatabaseResource.java
 /workspaces/progetto-sd/skeleton-project/server-web/src/main/java/it/unimib/sd2024/SessionManager.java
 /workspaces/progetto-sd/skeleton-project/server-web/src/main/java/it/unimib/sd2024/UserBuyRequest.java
 /workspaces/progetto-sd/skeleton-project/server-web/src/main/java/it/unimib/sd2024/UserBuyRequestResource.java
