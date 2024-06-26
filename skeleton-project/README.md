@@ -14,8 +14,9 @@ Tra le funzionalità offerte dalla nostra piattaforma ci sono le seguenti:
 
 ## Componenti del gruppo
 
-* Nome Cognome (Matricola) <email@campus.unimib.it>
-* ...
+* Franscesco Bianchi (902251) <f.bianchi85@campus.unimib.it>
+* Stefano Brighenti (900153) <s.brighenti4@campus.unimib.it>
+* Daniele Buser (894514) <d.buser@campus.unimib.it>
 
 ## Compilazione ed esecuzione
 
