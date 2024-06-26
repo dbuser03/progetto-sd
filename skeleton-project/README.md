@@ -1,6 +1,16 @@
 # Progetto Sistemi Distribuiti 2023-2024
 
-Lo scheletro espone la struttura che il progetto deve seguire. Al posto di questo paragrafo è necessario scrivere il nome del progetto e una breve descrizione.
+Domains.com è un sito internet che permette l'acquisto di uno o più domini web.
+Tra le funzionalità offerte dalla nostra piattaforma ci sono le seguenti:
+- Acquisto di un nuovo dominio
+- Acquisto di un dominio da me posseduto in passato e scaduto (a patto che non
+  lo abbiano comprato altri)
+- Rinnovo di un dominio da me posseduto e non ancora scaduto
+- Possibilità di visualizzare le informazioni inerenti ad un dominio posseduto
+  da altri
+- Possibilità di contattare il proprietario di un dominio a cui sono
+  interessato tramite mail
+- Visionare il catalogo di tutti i domini in mio possesso (scaduti e non)
 
 ## Componenti del gruppo
 
