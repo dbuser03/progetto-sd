@@ -1,31 +1,16 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const tableBody = document.querySelector('.order-table tbody');
+    const tableBody = document.querySelector('.domain-table tbody');
 
-    // Event delegation for hover effect on table rows
-    tableBody.addEventListener('mouseenter', event => {
-        if (event.target.tagName === 'TR') {
-            // Set a timeout to add hover class
-            let hoverTimeout = setTimeout(() => {
-                event.target.classList.add('hovered');
-            }, 400);
-            // Store timeout ID for later use
-            event.target.dataset.hoverTimeout = hoverTimeout;
-        }
-    }, true); // Capture phase
-
-    tableBody.addEventListener('mouseleave', event => {
-        if (event.target.tagName === 'TR') {
-            // Retrieve and clear the hover timeout
-            const hoverTimeout = event.target.dataset.hoverTimeout;
-            clearTimeout(hoverTimeout);
-            event.target.classList.remove('hovered');
-        }
-    }, true); // Capture phase
-
-    // Fetch and display orders
     try {
+        // Recupera l'ID dell'utente dalla sessione
         const userId = sessionStorage.getItem('sessionToken');
-        const response = await fetch(`http://localhost:8080/orders?userId=${userId}`, {
+        if (!userId) {
+            throw new Error('User ID not found in session');
+        }
+
+        // Costruisce l'URL per la chiamata API, includendo l'userId come parametro di query
+        const url = `http://localhost:8080/orders?userId=${userId}`;
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -38,24 +23,36 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const jsonResponse = await response.json();
 
-        // Clear table and populate with new rows
         tableBody.innerHTML = '';
         jsonResponse.forEach(order => {
             const row = document.createElement('tr');
+
             row.innerHTML = `
-        <td>${order.orderId}</td>
-        <td>${order.currentDate}</td>
-        <td>${order.expirationDate}</td>
-      `;
+                <td>${order.domainId}</td>
+                <td>${order.registerDate}</td>
+                 <td>${order.orderDate}</td>
+                <td>${order.Price}</td>
+                <td>${order.type}</td>
+            `;
             tableBody.appendChild(row);
 
-            // Add click event listener to each row
             row.addEventListener('click', () => {
-                searchorder(order.orderId, userId);
+                // Assumendo che searchOrder sia una funzione definita per cercare un ordine specifico
+                searchOrder(order.orderId, userId);
             });
+
+            // Aggiungi effetti hover
+            row.addEventListener('mouseenter', () => row.classList.add('hovered'));
+            row.addEventListener('mouseleave', () => row.classList.remove('hovered'));
         });
 
     } catch (error) {
         alert('Failed to fetch orders: ' + error.message);
     }
 });
+
+// Definisci la funzione searchOrder se non esiste
+function searchOrder(orderId, userId) {
+    // Implementa la logica per cercare un ordine specifico
+    console.log(`Searching for order ${orderId} for user ${userId}`);
+}

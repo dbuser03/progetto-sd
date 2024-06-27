@@ -1,9 +1,17 @@
+// Add click event listener to the "My Domains" button to redirect to the domains page
+document.getElementById('my-domains').addEventListener('click', function () {
+  window.location.href = './my-domains.html'; // Adjust the path as necessary
+});
+
+// Add click event listener to the "My Orders" button to redirect to the orders page
+document.getElementById('my-orders').addEventListener('click', function () {
+  window.location.href = './orders.html'; // Adjust the path as necessary
+});
+
 // Resets the search form by clearing the domain search input field
 function resetSearchForm() {
   document.getElementById('domain-search-input').value = '';
 }
-
-releaseDomain(sessionStorage.getItem('domainToRelease'))
 
 // Asynchronously searches for a domain based on the input value
 async function searchDomain() {
@@ -37,7 +45,7 @@ async function searchDomain() {
 
     // Parse the JSON response
     const jsonResponse = await response.json();
-    
+
     // Handle the response based on the action specified in the JSON
     switch (jsonResponse.action) {
       case "View owner details":
@@ -75,17 +83,22 @@ async function searchDomain() {
 }
 
 // Add event listeners once the DOM content is fully loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Navigate to the my domains page when the my domains button is clicked
-  document.getElementById('my-domains').addEventListener('click', function() {
-    window.location.href='../my-domains-page/domains.html';
+  document.getElementById('my-domains').addEventListener('click', function () {
+    window.location.href = '../my-domains-page/domains.html';
+  });
+
+  // Navigate to the my orders page when the my orders button is clicked
+  document.getElementById('my-orders').addEventListener('click', function () {
+    window.location.href = '../my-orders-page/orders.html';
   });
 
   // Add click event listener to the search icon to initiate domain search
   document.getElementById('search-icon').addEventListener('click', searchDomain);
 
   // Add keypress event listener to trigger domain search on pressing Enter
-  document.getElementById('domain-search-input').addEventListener('keypress', function(event) {
+  document.getElementById('domain-search-input').addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
       searchDomain();
     }
