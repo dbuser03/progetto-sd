@@ -85,8 +85,8 @@ public class UserBuyRequestResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateDomainExpiration(UserBuyRequest userBuyRequest) {
     try {
-      LocalDate expirationDate = LocalDate.parse(userBuyRequest.getExpirationDate());
-      LocalDate newExpirationDate = expirationDate.plusYears(Long.parseLong(userBuyRequest.getDuration()));
+      LocalDate currentDate = LocalDate.parse(userBuyRequest.getCurrentDate());
+      LocalDate newExpirationDate = currentDate.plusYears(Long.parseLong(userBuyRequest.getDuration()));
 
       userBuyRequest.setExpirationDate(newExpirationDate.toString());
 

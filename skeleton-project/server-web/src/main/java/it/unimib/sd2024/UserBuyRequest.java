@@ -20,8 +20,6 @@ public class UserBuyRequest {
   private String currentDate;
   private String expirationDate;
 
-  private String price;
-
   /**
    * Default constructor for creating an empty UserBuyRequest.
    */
@@ -43,7 +41,7 @@ public class UserBuyRequest {
    * @param price              The price of the domain purchase or renewal.
    */
   public UserBuyRequest(String userId, String domainId, String cardOwnerName, String cardOwnerSurname,
-      String cardNumber, String cardExpirationDate, String CVV, String duration, String price) {
+      String cardNumber, String cardExpirationDate, String CVV, String duration, String price, String type) {
     this.userId = userId;
     this.domainId = domainId;
     this.cardOwnerName = cardOwnerName;
@@ -52,7 +50,6 @@ public class UserBuyRequest {
     this.cardExpirationDate = cardExpirationDate;
     this.CVV = CVV;
     this.duration = duration;
-    this.price = price;
   }
 
   // Getters and setters with appropriate Javadoc comments
@@ -148,15 +145,6 @@ public class UserBuyRequest {
   }
 
   /**
-   * Gets the price of the domain purchase or renewal.
-   *
-   * @return The price.
-   */
-  public String getPrice() {
-    return price;
-  }
-
-  /**
    * Sets the user ID.
    *
    * @param userId The user ID to set.
@@ -244,14 +232,5 @@ public class UserBuyRequest {
    */
   public void setExpirationDate(String expirationDate) {
     this.expirationDate = expirationDate;
-  }
-
-  /**
-   * Sets the price of the domain purchase or renewal.
-   *
-   * @param price The price to set.
-   */
-  public void setPrice(String price) {
-    this.price = price;
   }
 }

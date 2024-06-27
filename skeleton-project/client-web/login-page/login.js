@@ -27,8 +27,9 @@ async function createCollectionOnPageLoad(collectionName) {
 
 // Chiama la funzione createCollection non appena la pagina viene caricata
 window.onload = function() {
-  createCollectionOnPageLoad("registrations"); // Sostituisci "registrations" con il nome desiderato della collezione
-  createCollectionOnPageLoad("domains"); // Sostituisci "domains" con il nome desiderato della collezione
+  createCollectionOnPageLoad("registrations");
+  createCollectionOnPageLoad("domains");
+  createCollectionOnPageLoad("orders")
 };
 
 function resetLoginForm() {

@@ -71,7 +71,7 @@ public class Main {
           // Handle the input with a local ProtocolHandler object
           ProtocolHandler protocolHandler = new ProtocolHandler(inputLine, database);
           String response = protocolHandler.handleRequest();
-          System.out.println(response);
+          // System.out.println(response);
           out.println(response); // Send response back to client
         }
       } catch (IOException e) {

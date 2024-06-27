@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     domainElement.textContent = domainDetails.domainId;
 
     const priceElement = document.querySelector('.price');
-    priceElement.textContent = `${domainDetails.price}$/month`;
+    priceElement.textContent = `${sessionStorage.getItem(domainDetails.domainId)}$/month`;
   }
 
   document.getElementById('domain-renew-form').addEventListener('submit', async function(event) {
@@ -14,12 +14,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const formData = new FormData(this);
 
+    const yearsToAdd = parseInt(formData.get('duration'));
+    const previousDuration = parseInt(domainDetails.duration);
+
+    const jsonData = {};
+    const jsonOrderData = {};
+
     // Update domainDetails with new form data
-    for (let [key, value] of formData.entries()) {
-      if (key in domainDetails) {
-        domainDetails[key] = value;
-      }
-    }
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
+    });
+
 
     // Validate the card number length
     const cardNumber = formData.get('cardNumber');
@@ -58,12 +63,29 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Validate the duration
-    const durationYears = parseInt(domainDetails.duration);
-    if (isNaN(durationYears) || durationYears < 1 || durationYears > 10) {
-      alert('Please enter a duration between 1 and 10 years.');
-      return; 
+    // Validate the duration input and ensure total duration does not exceed 10 years
+    if (isNaN(yearsToAdd) || yearsToAdd < 1 || yearsToAdd > 10) {
+      alert('Please make sure that the duration to add is between 1 and 10 years.');
+      return;
     }
+
+    const newDuration = previousDuration + yearsToAdd;
+
+    if (newDuration > 10) {
+      alert('The total duration after renewal cannot exceed 10 years. Please adjust the duration.');
+      return;
+    }
+
+    // Update domainDetails with the new duration
+    domainDetails.duration = newDuration;
+
+    jsonOrderData.domainId = domainDetails.domainId;
+    jsonOrderData.userId = domainDetails.userId;
+    jsonOrderData.orderDate = new Date().toISOString();
+    jsonOrderData.price = domainDetails.price;
+    jsonOrderData.type = 'renewal';
+
+    // try to log the order in the database collection named orders
 
     try {
       const response = await fetch(`http://localhost:8080/domains`, {

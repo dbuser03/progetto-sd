@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const formData = new FormData(this);
     const jsonData = {};
+    const jsonOrderData = {};
 
     formData.forEach((value, key) => {
       jsonData[key] = value;
@@ -72,13 +73,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (domainId) {
       jsonData.domainId = domainId;
-      jsonData.price = generateDomainPrice(domainId);
+      jsonOrderData.domainId = domainId;
     }
 
     const userId = sessionStorage.getItem('sessionToken');
 
     jsonData.userId = userId;
+    jsonOrderData.userId = userId;
     jsonData.registrationDate = currentDate.toISOString();
+    jsonOrderData.orderDate = currentDate.toISOString();
+
+    jsonOrderData.type = 'buy';
+
+    // try to log the order in the database collection named orders
 
     // Calculate the domain expiration date
     const today = new Date();
