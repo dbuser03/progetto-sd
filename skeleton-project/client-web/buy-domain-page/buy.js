@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       if (response.status === 200) {
-        alert('Domain purchased successfully until!');
+        alert('Domain purchased successfully!');
         resetBuyForm();
         window.location.replace('../home-page/homepage.html');
       } else {
