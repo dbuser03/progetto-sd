@@ -75,13 +75,15 @@ document.addEventListener('DOMContentLoaded', function() {
       jsonData.price = generateDomainPrice(domainId);
     }
 
-    const expirationDate = new Date(currentDate);
-    expirationDate.setFullYear(currentDate.getFullYear() + durationYears);    
-
     const userId = sessionStorage.getItem('sessionToken');
 
     jsonData.userId = userId;
     jsonData.registrationDate = currentDate.toISOString();
+
+    // Calculate the domain expiration date
+    const today = new Date();
+    const expirationYear = today.getFullYear() + durationYears;
+    const domainExpirationDate = new Date(today.setFullYear(expirationYear)).toISOString().split('T')[0];
 
     try {
       const response = await fetch('http://localhost:8080/domains', {
@@ -93,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       if (response.status === 200) {
-        alert('Domain purchased successfully!');
+        alert('Domain buyed successfully until ' + domainExpirationDate + '!');
         resetBuyForm();
         window.location.replace('../home-page/homepage.html');
       } else {
