@@ -31,14 +31,18 @@ gestire le dipendenze, la compilazione e l'esecuzione.
 
 ### Client Web
 
-Per avviare il client Web è necessario utilizzare l'estensione "Live Preview" su
-Visual Studio Code, come mostrato durante il laboratorio. Tale estensione espone
-un server locale con i file contenuti nella cartella `client-web`.
-
-In alternativa è possibile utilizzare l'estensione "Live Server" e una volta
-avviato il database e il server-web è possibile aprire il file `index.html`
+Per avviare il client Web è consigliato utilizzare l'estensione "Live Server" (scaricabile dallo store di `Vs Code`) 
+e una volta avviato il database e il server-web è possibile aprire il file `index.html`
 facendo tasto destro su di esso e selezionando l'opzione "Open with Live Server
 [Alt + L Alt + O]".
+Questo perchè `Live Preview` non ci permetteva di utilizzare le alert javascript.
+
+Si può comunque utilizzare  l'estensione "Live Preview" su
+Visual Studio Code, come mostrato durante il laboratorio, perdendo però la funzionalità 
+data dall'uso delle alert.
+
+Una terza opzione per avviare il client web è quella di aprire il file `index.html` con `crhome`
+dalla cartella del progetto una volta avviati database e server web.
 
 ### Server Web
 
