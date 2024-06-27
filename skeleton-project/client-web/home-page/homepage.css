@@ -181,7 +181,7 @@ p {
 .button-container {
   display: flex;
   justify-content: space-between;
-  width: 40%;
+  width: 45%;
 }
 
 .my-domains {
@@ -194,8 +194,7 @@ p {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  max-width: 48%;
-  margin-right: 2%;
+  margin-right: 1rem;
 }
 
 .my-domains:hover {
