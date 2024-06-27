@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const tableBody = document.querySelector('.domain-table tbody');
+  const userId = sessionStorage.getItem('sessionToken');
 
   // Event delegation for hover effect on table rows
   tableBody.addEventListener('mouseenter', event => {
@@ -24,7 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Fetch and display domains
   try {
-    const userId = sessionStorage.getItem('sessionToken');
     const response = await fetch(`http://localhost:8080/domains?userId=${userId}`, {
       method: 'GET',
       headers: {
@@ -84,7 +84,7 @@ async function searchDomain(domainId, userId) {
     }
 
     const jsonResponse = await response.json();
-    
+
     // Handle response action
     switch (jsonResponse.action) {
       case "View owner details":

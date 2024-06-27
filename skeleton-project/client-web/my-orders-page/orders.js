@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const tableBody = document.querySelector('.domain-table tbody');
+    const tableBody = document.querySelector('.order-table tbody');
 
     try {
         // Recupera l'ID dell'utente dalla sessione
@@ -29,21 +29,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             row.innerHTML = `
                 <td>${order.domainId}</td>
-                <td>${order.registerDate}</td>
-                 <td>${order.orderDate}</td>
-                <td>${order.Price}</td>
+                <td>${order.orderDate}</td>
+                <td>${order.price}$/month</td>
                 <td>${order.type}</td>
             `;
             tableBody.appendChild(row);
-
-            row.addEventListener('click', () => {
-                // Assumendo che searchOrder sia una funzione definita per cercare un ordine specifico
-                searchOrder(order.orderId, userId);
-            });
-
-            // Aggiungi effetti hover
-            row.addEventListener('mouseenter', () => row.classList.add('hovered'));
-            row.addEventListener('mouseleave', () => row.classList.remove('hovered'));
         });
 
     } catch (error) {

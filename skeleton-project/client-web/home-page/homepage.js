@@ -1,3 +1,5 @@
+releaseDomain(sessionStorage.getItem('domainToRelease'))
+
 // Add click event listener to the "My Domains" button to redirect to the domains page
 document.getElementById('my-domains').addEventListener('click', function () {
   window.location.href = './my-domains.html'; // Adjust the path as necessary

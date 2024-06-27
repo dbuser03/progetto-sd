@@ -10,7 +10,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
@@ -18,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.net.Socket;
 
 /**
@@ -29,6 +32,7 @@ public class UserOrderRequestResource {
   // Indirizzo e porta del database, per la connessione via socket
   private static final String DATABASE_HOST = "localhost";
   private static final int DATABASE_PORT = 3030;
+  private static int orderCounter = 0;
   // Istanza di Jsonb per la serializzazione e deserializzazione JSON
   private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -67,15 +71,43 @@ public class UserOrderRequestResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getOrders(@QueryParam("userId") String userId) {
-    String command;
-    // Costruisce il comando in base alla presenza dell'userId
-    if (userId != null && !userId.isEmpty()) {
-      command = "GET orders" + userId;
-    } else {
-      command = "GET orders";
+    String command = "GET orders";
+    Response databaseResponse = connectToDatabaseAndHandleResponse(command);
+
+    if (databaseResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+      return createErrorResponse("Database connection error", Status.INTERNAL_SERVER_ERROR);
     }
-    // Connette al database e restituisce la risposta
-    return connectToDatabaseAndHandleResponse(command);
+
+    String responseContent = databaseResponse.getEntity().toString();
+    try (JsonReader jsonReader = Json.createReader(new StringReader(responseContent))) {
+      JsonObject responseObject = jsonReader.readObject();
+      JsonObject allDocuments = responseObject.getJsonObject("allDocuments");
+      JsonArrayBuilder filteredOrdersArrayBuilder = Json.createArrayBuilder();
+
+      allDocuments.keySet().forEach(orderKey -> {
+        JsonObject orderData = allDocuments.getJsonObject(orderKey).getJsonObject("data");
+        if (userId == null || userId.trim().isEmpty() || userId.equals(orderData.getString("userId"))) {
+          JsonObject filteredOrder = Json.createObjectBuilder()
+              .add("domainId", orderData.getString("domainId"))
+              .add("orderDate", orderData.getString("orderDate"))
+              .add("type", orderData.getString("type"))
+              .add("price", orderData.getString("price"))
+              .build();
+          filteredOrdersArrayBuilder.add(filteredOrder);
+        }
+      });
+
+      return Response.status(Status.OK).entity(filteredOrdersArrayBuilder.build()).build();
+    } catch (Exception e) {
+      return createErrorResponse("Error processing database response", Status.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  private Response createErrorResponse(String message, Status status) {
+    JsonObject errorObject = Json.createObjectBuilder()
+        .add("error", message)
+        .build();
+    return Response.status(status).entity(errorObject).build();
   }
 
   /**
@@ -84,22 +116,16 @@ public class UserOrderRequestResource {
    * @param orderRequest La richiesta contenente le informazioni dell'ordine.
    * @return Un oggetto Response che indica l'esito del tentativo di creazione.
    */
+
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public Response createOrder(UserOrderRequest orderRequest) {
-    // Crea un oggetto JSON con le informazioni dell'ordine
-    JsonObject orderJson = Json.createObjectBuilder()
-        .add("userId", orderRequest.getUserId())
-        .add("domainId", orderRequest.getDomainId())
-        .add("orderDate", orderRequest.getOrderDate())
-        .add("type", orderRequest.getType())
-        .add("price", orderRequest.getPrice())
-        .build();
+    // Increment the counter
+    orderCounter++;
+    String orderRequestJson = jsonb.toJson(orderRequest);
+    String command = "POST orders " + orderCounter + " " + orderRequestJson;
 
-    // Costruisce il comando per inserire l'ordine nel database
-    String command = "POST orders" + jsonb.toJson(orderJson);
-
-    // Connette al database e restituisce la risposta
+    // Connect to the database and handle the response
     return connectToDatabaseAndHandleResponse(command);
   }
 }

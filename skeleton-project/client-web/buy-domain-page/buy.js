@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const formData = new FormData(this);
     const jsonData = {};
-    const jsonOrderData = {};
+    const jsonOrderData = {"domainId": "","userId": "","orderData": "","type": "","price": ""};
 
     formData.forEach((value, key) => {
       jsonData[key] = value;
@@ -71,6 +71,12 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
+    // Calculate the domain expiration date
+    const today = new Date();
+    const expirationYear = today.getFullYear() + durationYears;
+    const domainExpirationDate = new Date(today.setFullYear(expirationYear)).toISOString().split('T')[0];
+
+
     if (domainId) {
       jsonData.domainId = domainId;
       jsonOrderData.domainId = domainId;
@@ -80,17 +86,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     jsonData.userId = userId;
     jsonOrderData.userId = userId;
-    jsonData.registrationDate = currentDate.toISOString();
-    jsonOrderData.orderDate = currentDate.toISOString();
+    jsonData.currentDate = today.toISOString().slice(0, 10);
+    jsonOrderData.orderDate = new Date().toISOString().slice(0, 10);
 
     jsonOrderData.type = 'buy';
+    jsonOrderData.price = sessionStorage.getItem(domainId);
 
     // try to log the order in the database collection named orders
+    try {
+      const orderResponse = await fetch('http://localhost:8080/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonOrderData)
+      });
 
-    // Calculate the domain expiration date
-    const today = new Date();
-    const expirationYear = today.getFullYear() + durationYears;
-    const domainExpirationDate = new Date(today.setFullYear(expirationYear)).toISOString().split('T')[0];
+      if (orderResponse.status !== 200) {
+        throw new Error('Failed to log order. Server responded with status code: ' + orderResponse.status);
+      }
+    } catch (error) {
+      console.error('Error logging order:', error.message);
+      alert('Error logging order. Please try again.');
+      return; // Stop further execution in case of error
+    }
 
     try {
       const response = await fetch('http://localhost:8080/domains', {

@@ -47,11 +47,7 @@ body {
     }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
+h1, h2, h3, h4, h5 {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
 }
@@ -144,31 +140,9 @@ p {
 .order-table tr {
     position: relative;
     overflow: hidden;
-    cursor: pointer;
-}
-
-.order-table tr::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    background-color: #f6f6f6;
-    z-index: 0;
-    transition: width 1s ease;
 }
 
 .order-table td {
     position: relative;
     z-index: 1;
-}
-
-.order-table tr.hovered::after {
-    width: 100%;
-}
-
-.order-table tr.hovered td {
-    color: #18191a;
-    cursor: pointer;
 }

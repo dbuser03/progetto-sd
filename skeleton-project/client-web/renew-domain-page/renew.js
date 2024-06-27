@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   document.getElementById('domain-renew-form').addEventListener('submit', async function(event) {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const formData = new FormData(this);
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const previousDuration = parseInt(domainDetails.duration);
 
     const jsonData = {};
-    const jsonOrderData = {};
+    const jsonOrderData = {"domainId": "","userId": "","orderData": "","type": "","price": ""};
 
     // Update domainDetails with new form data
     formData.forEach((value, key) => {
@@ -81,11 +81,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     jsonOrderData.domainId = domainDetails.domainId;
     jsonOrderData.userId = domainDetails.userId;
-    jsonOrderData.orderDate = new Date().toISOString();
-    jsonOrderData.price = domainDetails.price;
+    jsonOrderData.orderDate = new Date().toISOString().slice(0, 10);
+    jsonOrderData.price = sessionStorage.getItem(domainDetails.domainId);
     jsonOrderData.type = 'renewal';
 
     // try to log the order in the database collection named orders
+    try {
+      const orderResponse = await fetch('http://localhost:8080/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonOrderData)
+      });
+
+      if (orderResponse.status !== 200) {
+        throw new Error('Failed to log order. Server responded with status code: ' + orderResponse.status);
+      }
+    } catch (error) {
+      console.error('Error logging order:', error.message);
+      alert('Error logging order. Please try again.');
+      return; // Stop further execution in case of error
+    }
 
     try {
       const response = await fetch(`http://localhost:8080/domains`, {
