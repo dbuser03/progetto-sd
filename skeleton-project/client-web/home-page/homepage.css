@@ -99,6 +99,7 @@ p {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  overflow: scroll;
 }
 .logo {
   width: 8.4375vw;
@@ -109,7 +110,7 @@ p {
   display: flex;
   align-items: center;
   height: 5rem;
-  min-height: 5rem;
+  min-height: 3rem;
   margin-bottom: 3rem;
   max-width: 900px;
   width: 100%;
@@ -156,6 +157,9 @@ p {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  max-width: 100%;
+  margin-top: auto;
+  align-self: left;
 }
 .my-domains:hover {
   background-color: #e03d00;
