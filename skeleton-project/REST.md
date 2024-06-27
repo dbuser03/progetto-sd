@@ -45,11 +45,11 @@ riferisce alla risorsa `/collections`.
 - **Header**: `Content-Type: application/json`
 - **Body richiesta**: Un oggetto JSON che contiene il nome della collezione da
   creare. Esempio: `{"collectionName": "nomeCollezione"}`.
-- **Risposta**: 
+- **Risposta**:
   - In caso di successo, restituisce una conferma che la collezione è stata
     creata.
   - In caso di errore, restituisce un messaggio di errore.
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: La collezione è stata creata con successo.
   - `500 Internal Server Error`: Errore interno del server, impossibile creare
     la collezione.
@@ -97,7 +97,7 @@ riferisce alla risorsa `/registrations`.
 - **Header**: `Accept: application/json`.
 - **Body richiesta**: Nessuno.
 - **Risposta**: Un array JSON contenente tutte le email degli utenti registrati
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: Richiesta eseguita con successo e email degli utenti restituite.
   - `500 Internal Server Error`: Errore interno del server, impossibile
     recuperare le email degli utenti.
@@ -244,11 +244,11 @@ riferisce alla risorsa `/login`.
   dell'utente `userId`. E' stato scelto di utilizzare lo userId come fosse una
   password o chiave per il singolo utente. Abbiamo usato UUID per generarla
   invece di utilizzare uno userId numeri es. 1, 2, 3, ..., n.
-- **Risposta**: 
+- **Risposta**:
   - In caso di successo, restituisce un messaggio di conferma del login e un
     token di sessione.
   - In caso di credenziali non valide, restituisce un messaggio di errore.
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: Login effettuato con successo. Restituisce il token di sessione.
   - `401 Unauthorized`: Credenziali non valide. L'utente non è autorizzato.
   - `500 Internal Server Error`: Errore interno del server, impossibile
@@ -342,7 +342,7 @@ riferisce alla risorsa `/domains`.
 - **Header**: `Content-Type: application/json` - Indica che la risposta sarà in
   formato JSON.
 - **Body richiesta**: Nessuno.
-- **Risposta**: 
+- **Risposta**:
   - Se il dominio non è trovato o è in fase di acquisto, restituisce un'azione
     consigliata ("Concurrency error" o "Buy domain") con il relativo ID del
     dominio.
@@ -354,7 +354,7 @@ riferisce alla risorsa `/domains`.
     errore specifico.
   - In caso di richiesta non valida, restituisce un errore di richiesta non
     valida.
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: La ricerca è stata completata con successo e i dettagli del
     dominio (o l'azione consigliata) sono restituiti.
   - `400 Bad Request`: La richiesta non è valida, tipicamente a causa di un
@@ -420,7 +420,7 @@ riferisce alla risorsa `/domains`.
 - **Header**: `Content-Type: application/json`
 - **Body richiesta**: Nessuno. Le informazioni necessarie sono passate tramite
   il parametro della query.
-- **Risposta**: 
+- **Risposta**:
   - In caso di successo, restituisce un array di oggetti JSON, ognuno
     rappresentante un dominio appartenente all'utente, con dettagli come l'ID
     del dominio, la data corrente e la data di scadenza.
@@ -428,7 +428,7 @@ riferisce alla risorsa `/domains`.
     errore specifico.
   - Se l'ID utente non è fornito o è invalido, restituisce un errore di
     richiesta non valida.
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: La richiesta è stata completata con successo e i dettagli dei
     domini sono restituiti.
   - `400 Bad Request`: La richiesta non è valida, tipicamente a causa di un ID
@@ -486,11 +486,11 @@ riferisce alla risorsa `/domains`.
     della durata dell'acquisto.
   - `price`: Il prezzo dell'acquisto, calcolato in base alla durata
     dell'acquisto e ad altri eventuali fattori.
-- **Risposta**: 
+- **Risposta**:
   - La conferma dell'acquisto del dominio o un messaggio di errore se il dominio
     non è disponibile per l'acquisto, o se si verifica un problema con la
     connessione al database.
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: L'acquisto del dominio è stato completato con successo.
   - `500 Internal Server Error`: Errore interno del server, come un problema di
     connessione al database o un errore durante il processo di acquisto.
@@ -547,11 +547,11 @@ riferisce alla risorsa `/domains`.
   richiesta e della risposta sarà in formato JSON.
 - **Body richiesta**: JSON che rappresenta l'oggetto `UserBuyRequest` con i
   campi sopra elencati.
-- **Risposta**: 
+- **Risposta**:
   - In caso di successo, restituisce un JSON con la nuova data di scadenza del
     dominio.
   - In caso di errore, restituisce un messaggio di errore appropriato.
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: L'aggiornamento della data di scadenza del dominio è stato
     completato con successo.
   - `400 Bad Request`: Si verifica un errore nella richiesta, ad esempio se il
@@ -601,17 +601,123 @@ riferisce alla risorsa `/domains`.
   formato JSON.
 - **Body richiesta**: Nessuno. L'ID del dominio da rilasciare viene passato
   direttamente nell'URL.
-- **Risposta**: 
+- **Risposta**:
   - In caso di successo, restituisce un messaggio che conferma il rilascio del
     dominio.
   - In caso di errore, ad esempio se il dominio non è stato trovato o non può
     essere rilasciato, restituisce un messaggio di errore appropriato.
-- **Codici di stato restituiti**: 
+- **Codici di stato restituiti**:
   - `200 OK`: Il dominio è stato rilasciato con successo.
   - `400 Bad Request`: Si verifica un errore nella richiesta, ad esempio se la
     richiesta è malformata.
   - `500 Internal Server Error`: Errore interno del server, impossibile
     completare l'operazione di rilascio del dominio.
 
+### GET (GetUserOrders)
+```
+@GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getOrders(@QueryParam("userId") String userId) {
+    String command = "GET orders";
+    Response databaseResponse = connectToDatabaseAndHandleResponse(command);
 
-AGGIUNGERE API DEGLI ORDINI
+    if (databaseResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+      return createErrorResponse("Database connection error", Status.INTERNAL_SERVER_ERROR);
+    }
+
+    String responseContent = databaseResponse.getEntity().toString();
+    try (JsonReader jsonReader = Json.createReader(new StringReader(responseContent))) {
+      JsonObject responseObject = jsonReader.readObject();
+      JsonObject allDocuments = responseObject.getJsonObject("allDocuments");
+      JsonArrayBuilder filteredOrdersArrayBuilder = Json.createArrayBuilder();
+
+      allDocuments.keySet().forEach(orderKey -> {
+        JsonObject orderData = allDocuments.getJsonObject(orderKey).getJsonObject("data");
+        if (userId == null || userId.trim().isEmpty() || userId.equals(orderData.getString("userId"))) {
+          JsonObject filteredOrder = Json.createObjectBuilder()
+              .add("domainId", orderData.getString("domainId"))
+              .add("orderDate", orderData.getString("orderDate"))
+              .add("type", orderData.getString("type"))
+              .add("price", orderData.getString("price"))
+              .build();
+          filteredOrdersArrayBuilder.add(filteredOrder);
+        }
+      });
+
+      return Response.status(Status.OK).entity(filteredOrdersArrayBuilder.build()).build();
+    } catch (Exception e) {
+      return createErrorResponse("Error processing database response", Status.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  private Response createErrorResponse(String message, Status status) {
+    JsonObject errorObject = Json.createObjectBuilder()
+        .add("error", message)
+        .build();
+    return Response.status(status).entity(errorObject).build();
+  }
+```
+- **Descrizione**:
+- Questo endpoint viene utilizzato per ottenere gli ordini di
+  un utente specifico. L'utente è identificato dall'ID `userId` passato come
+  parametro di query. Questa operazione è tipicamente necessaria quando si vuole
+  visualizzare l'elenco degli ordini effettuati da un utente. Se l'ID
+  dell'utente non è specificato, l'endpoint restituirà tutti gli ordini.
+
+- **Parametri**:
+  - `userId` (QueryParam): L'ID dell'utente i cui ordini si desidera ottenere.
+- **Header**: 
+  - `Content-Type: application/json` - Indica che la risposta sarà in
+  formato JSON.
+- **Body richiesta**: 
+  - Nessuno. L'ID del dominio da rilasciare viene passato
+  direttamente nell'URL.
+- **Risposta**:
+  - In caso di successo, gli ordini, Ogni ordine e' un JSON objext che contiene
+    `domainId`, `orderDate`, `type` and `price`.
+  - In caso di errore, ad esempio se si verifica un errore durante il processo
+    di recupero degli ordini dal database, restituisce un oggetto JSON con un
+    messaggio di errore.
+  - **Codici di stato restituiti**:
+    - `200 OK`: Il dominio è stato rilasciato con successo.
+    - `500 Internal Server Error`: Errore interno del server, impossibile
+    completare l'operazione di rilascio del dominio.
+
+### POST (UserOrder)
+```
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createOrder(UserOrderRequest orderRequest) {
+    // Increment the counter
+    orderCounter++;
+    String orderRequestJson = jsonb.toJson(orderRequest);
+    String command = "POST orders " + orderCounter + " " + orderRequestJson;
+
+    // Connect to the database and handle the response
+    return connectToDatabaseAndHandleResponse(command);
+  }
+  ```
+  - **Descrizione**: 
+    - Questo endpoint viene utilizzato per creare un nuovo
+    ordine. L'ordine viene creato sulla base dei dati forniti nel corpo della
+    richiesta. Questa operazione è tipicamente necessaria quando un utente
+    effettua un nuovo ordine, o il rinnovo di un dominio preesitente.
+- **Parametri**:
+  - Nessuno. Tutti i dati necessari per creare un nuovo ordine vengono forniti
+    nel corpo della richiesta.
+  - **Header**: `Content-Type: application/json` - Indica che la richiesta sarà in
+  formato JSON.
+- **Body richiesta**:
+  - Un oggetto JSON che rappresenta l'ordine da creare.
+  - Questo dovrebbe includere tutti i dettagli necessari per l'ordine.
+- **Risposta**:
+  - In caso di successo, restituisce un messaggio di conferma che l'ordine è stato creato con successo.
+  - In caso di errore, ad esempio se i dati dell'ordine non sono validi o se si
+    verifica un errore durante la creazione dell'ordine, restituisce un
+    messaggio di errore appropriato.
+  - Viene restituito un errore anche nel caso in cui si cerchi di creare un
+    ordine di rinnovo per un dominio non esistente.
+- **Codici di stato restituiti**:
+  - `200 OK`: Il dominio è stato rilasciato con successo.
+  - `500 Internal Server Error`: Errore interno del server, impossibile
+    completare l'operazione di rilascio del dominio.

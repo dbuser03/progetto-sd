@@ -88,7 +88,7 @@ comandi Maven all'interno della cartella `database` per startarlo:
 Il progetto è stato svolto seguendo questi step:
 1. Creazione di un database documentale
 2. Il database documentale è composto da una HashMap contenente le collezioni
-   necessarie per il nostro progetto. (`registrations`, `domains`).
+   necessarie per il nostro progetto. (`registrations`, `domains`, `orders`).
 4. Le collezioni sono strutturate come `name` (in formato String) + `documents`
    (ossia una HashMap contenente i vari documenti)
 3. Ogni collezione contiene al suo interno i documenti specifici di una delle
