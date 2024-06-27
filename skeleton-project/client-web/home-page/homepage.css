@@ -109,7 +109,7 @@ p {
   display: flex;
   align-items: center;
   height: 5rem;
-  min-height: 5rem;
+  min-height: 3rem;
   margin-bottom: 3rem;
   max-width: 900px;
   width: 100%;
