@@ -104,15 +104,15 @@ Il progetto è stato svolto seguendo questi step:
 8. Questa scelta è stata fatta per evitare di scrivere API non necessarie
    all'interazione utente-sistema.
 
-![Grid.png](/skeleton-project/screenshots/figma/Grid.png)
-![typography.png](/skeleton-project/screenshots/figma/Typograhpy.png)
-![LoginPage.png](/skeleton-project/screenshots/figma/LoginPage.png)
-![RegisterPage.png](/skeleton-project/screenshots/figma/RegisterPage.png)
-![HomePage.png](/skeleton-project/screenshots/figma/HomePage.png)
-![BuyPage.png](/skeleton-project/screenshots/figma/BuyPage.png)
-![RenewPage.png](/skeleton-project/screenshots/figma/RenewPage.png)
-![MyDomains.png](/skeleton-project/screenshots/figma/MyDomainsPage.png)
-![ErrorPage.png](/skeleton-project/screenshots/figma/ErrorPage.png)
+![Grid.png](/screenshots/figma/Grid.png)
+![typography.png](/screenshots/figma/Typograhpy.png)
+![LoginPage.png](/screenshots/figma/LoginPage.png)
+![RegisterPage.png](/screenshots/figma/RegisterPage.png)
+![HomePage.png](/screenshots/figma/HomePage.png)
+![BuyPage.png](/screenshots/figma/BuyPage.png)
+![RenewPage.png](/screenshots/figma/RenewPage.png)
+![MyDomains.png](/screenshots/figma/MyDomainsPage.png)
+![ErrorPage.png](/screenshots/figma/ErrorPage.png)
 
 9. Abbiamo scritto le API Rest nella cartella `server-web`. Le API permettono
    all'utente di eseguire le seguenti operazioni (`login`, `registration`,
